@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -44,10 +45,24 @@ public class mainGUI {
         // Make the frame visible
         frame.setVisible(true);
 
-        browseButton.addActionListener(e -> {
-            // Create a file chooser
-            JFileChooser fileChooser = new JFileChooser();
+        // Create a file filter to select only ".feature" files
+        FileFilter featureFileFilter = new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.isDirectory() || file.getName().toLowerCase().endsWith(".feature");
+            }
 
+            @Override
+            public String getDescription() {
+                return "Feature Files (*.feature)";
+            }
+        };
+
+        // Set the file filter for the file chooser
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(featureFileFilter);
+
+        browseButton.addActionListener(e -> {
             // Show the file dialog
             int returnValue = fileChooser.showOpenDialog(null);
 
